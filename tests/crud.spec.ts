@@ -1,0 +1,134 @@
+import { test, expect } from '@playwright/test';
+import { getToken } from './client/token-client';
+import { createCharacter, deleteCharacter, getCharacterByID, updateCharacter } from './client/character-client';
+import { BARBARIAN_CHAR_DRAFT, BARBARIAN_CHAR_UPDATE } from './data/character-data';
+
+let token = '';
+let charID = 0;
+
+console.log(token);
+console.log(charID);
+
+test.describe.serial('CRUD Flow', () => {
+
+// GET TOKEN //    
+    test.beforeAll( async ({ request }) => {
+        token = await getToken(request);
+
+        expect(token).toBeTruthy();
+        expect(token).toEqual(expect.any(String));
+        expect(token.length).toBeGreaterThan(20);
+    });
+
+// CREATE CHARACTER //
+    test('Create New Character', async ({ request }) => {
+        
+        const characterResponse = await createCharacter(
+            request, 
+            token, 
+            BARBARIAN_CHAR_DRAFT,
+        );
+        const characterResponseBody = await characterResponse.json();
+
+        expect (characterResponse.status()).toBe(201);
+
+        expect(characterResponseBody.id).not.toBeNull();
+        expect(characterResponseBody.name).toBe(BARBARIAN_CHAR_DRAFT.name);
+        expect(characterResponseBody.classId).toBe(null);
+        expect(characterResponseBody.speciesId).toBe(null);
+        expect(characterResponseBody.backgroundId).toBe(null);
+        expect(characterResponseBody.level).toBe(1);
+        expect(characterResponseBody.status).toBe("draft");
+        
+        charID = characterResponseBody.id;
+        console.log(token);
+        console.log(charID);
+    });
+
+// GET CHARACTER //
+    test('Get New Character', async ({ request }) => {
+        
+        const characterResponse = await getCharacterByID(
+            request, 
+            token,
+            charID
+        );
+        const characterResponseBody = await characterResponse.json();
+        console.log(charID);
+
+        expect (characterResponse.status()).toBe(200);
+
+        expect(characterResponseBody.id).toBe(charID);
+        expect(characterResponseBody.name).toBe(BARBARIAN_CHAR_DRAFT.name);
+        expect(characterResponseBody.classId).toBe(null);
+        expect(characterResponseBody.speciesId).toBe(null);
+        expect(characterResponseBody.backgroundId).toBe(null);
+        expect(characterResponseBody.level).toBe(1);
+        expect(characterResponseBody.status).toBe("draft");
+        
+        console.log(token);
+        console.log(charID);
+    });
+
+// UPDATE CHARACTER //
+    test('Update Character', async ({ request }) => {
+        
+        const characterResponse = await updateCharacter(
+            request, 
+            token,
+            BARBARIAN_CHAR_UPDATE,
+            charID
+        );
+        const characterResponseBody = await characterResponse.json();
+        console.log(charID);
+
+        expect (characterResponse.status()).toBe(200);
+
+        expect(characterResponseBody.id).toBe(charID);
+        expect(characterResponseBody.name).toBe(BARBARIAN_CHAR_DRAFT.name);
+        expect(characterResponseBody.classId).toBe(BARBARIAN_CHAR_UPDATE.classId);
+        expect(characterResponseBody.speciesId).toBe(BARBARIAN_CHAR_UPDATE.speciesId);
+        expect(characterResponseBody.backgroundId).toBe(BARBARIAN_CHAR_UPDATE.backgroundId);
+        expect(characterResponseBody.level).toBe(1);
+        expect(characterResponseBody.status).toBe("complete");
+        
+        console.log(token);
+        console.log(charID);
+    });
+
+// DELETE CHARACTER //    
+    test('Delete Character', async ({ request }) => {
+        
+        const characterResponse = await deleteCharacter(
+            request, 
+            token,
+            charID
+        );
+        const characterResponseBody = await characterResponse.json();
+        console.log(charID);
+
+        expect (characterResponse.status()).toBe(200);
+        expect(characterResponseBody.message).toBe("Character deleted successfully");
+      
+        
+        console.log(token);
+        console.log(charID);
+    });
+
+// GET DELETED CHARACTER - ERROR 404 //
+    test('Validate Deleted Character', async ({ request }) => {
+        
+        const characterResponse = await getCharacterByID(
+            request, 
+            token,
+            charID
+        );
+        const characterResponseBody = await characterResponse.json();
+        console.log(charID);
+
+        expect (characterResponse.status()).toBe(404);
+        expect(characterResponseBody.error).toBe("Character not found");
+    });
+
+
+});
