@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 import { getToken } from './client/token-client';
-import { createCharacter, deleteCharacter, getCharacterByID, updateCharacter } from './client/character-client';
-import { BARBARIAN_CHAR_DRAFT, BARBARIAN_CHAR_UPDATE } from './data/character-data';
+import { createCharacter, deleteCharacter, getCharacterByID, updateCharacterAbilityScoresByID, updateCharacterByID } from './client/character-client';
+import { BARBARIAN_CHAR_ABILITY_SCORES, BARBARIAN_CHAR_DRAFT, BARBARIAN_CHAR_UPDATE } from './data/character-data';
 
 let token = '';
 let charID = 0;
@@ -31,7 +31,6 @@ test.describe.serial('CRUD Flow', () => {
         const characterResponseBody = await characterResponse.json();
 
         expect (characterResponse.status()).toBe(201);
-
         expect(characterResponseBody.id).not.toBeNull();
         expect(characterResponseBody.name).toBe(BARBARIAN_CHAR_DRAFT.name);
         expect(characterResponseBody.classId).toBe(null);
@@ -41,8 +40,6 @@ test.describe.serial('CRUD Flow', () => {
         expect(characterResponseBody.status).toBe("draft");
         
         charID = characterResponseBody.id;
-        console.log(token);
-        console.log(charID);
     });
 
 // GET CHARACTER //
@@ -54,10 +51,8 @@ test.describe.serial('CRUD Flow', () => {
             charID
         );
         const characterResponseBody = await characterResponse.json();
-        console.log(charID);
 
         expect (characterResponse.status()).toBe(200);
-
         expect(characterResponseBody.id).toBe(charID);
         expect(characterResponseBody.name).toBe(BARBARIAN_CHAR_DRAFT.name);
         expect(characterResponseBody.classId).toBe(null);
@@ -65,35 +60,52 @@ test.describe.serial('CRUD Flow', () => {
         expect(characterResponseBody.backgroundId).toBe(null);
         expect(characterResponseBody.level).toBe(1);
         expect(characterResponseBody.status).toBe("draft");
-        
-        console.log(token);
-        console.log(charID);
     });
 
 // UPDATE CHARACTER //
     test('Update Character', async ({ request }) => {
         
-        const characterResponse = await updateCharacter(
+        const characterResponse = await updateCharacterByID(
             request, 
             token,
             BARBARIAN_CHAR_UPDATE,
             charID
         );
         const characterResponseBody = await characterResponse.json();
-        console.log(charID);
-
+      
         expect (characterResponse.status()).toBe(200);
-
         expect(characterResponseBody.id).toBe(charID);
-        expect(characterResponseBody.name).toBe(BARBARIAN_CHAR_DRAFT.name);
+        expect(characterResponseBody.name).toBe(BARBARIAN_CHAR_UPDATE.name);
         expect(characterResponseBody.classId).toBe(BARBARIAN_CHAR_UPDATE.classId);
         expect(characterResponseBody.speciesId).toBe(BARBARIAN_CHAR_UPDATE.speciesId);
         expect(characterResponseBody.backgroundId).toBe(BARBARIAN_CHAR_UPDATE.backgroundId);
         expect(characterResponseBody.level).toBe(1);
         expect(characterResponseBody.status).toBe("complete");
+    });
+
+// UPDATE ABILITY SCORES //
+    test('Update Character Ability Scores', async ({ request }) => {
         
-        console.log(token);
-        console.log(charID);
+        const characterResponse = await updateCharacterAbilityScoresByID(
+            request, 
+            token,
+            BARBARIAN_CHAR_ABILITY_SCORES,
+            charID
+        );
+        const characterResponseBody = await characterResponse.json();
+
+        expect(characterResponse.status()).toBe(200);
+        expect(characterResponseBody.characterId).toBe(charID);
+        expect(characterResponseBody.selectedAbilityScores.base).toEqual(BARBARIAN_CHAR_ABILITY_SCORES.abilityScores.base);
+        expect(characterResponseBody.selectedAbilityScores.bonuses).toEqual(BARBARIAN_CHAR_ABILITY_SCORES.abilityScores.bonuses);
+        expect(characterResponseBody.selectedAbilityScores.final).toEqual({
+            STR: 16,
+            DEX: 14,
+            CON: 14,
+            INT: 8,
+            WIS: 12,
+            CHA: 12
+            }); 
     });
 
 // DELETE CHARACTER //    
@@ -105,14 +117,8 @@ test.describe.serial('CRUD Flow', () => {
             charID
         );
         const characterResponseBody = await characterResponse.json();
-        console.log(charID);
-
         expect (characterResponse.status()).toBe(200);
         expect(characterResponseBody.message).toBe("Character deleted successfully");
-      
-        
-        console.log(token);
-        console.log(charID);
     });
 
 // GET DELETED CHARACTER - ERROR 404 //
@@ -124,11 +130,7 @@ test.describe.serial('CRUD Flow', () => {
             charID
         );
         const characterResponseBody = await characterResponse.json();
-        console.log(charID);
-
         expect (characterResponse.status()).toBe(404);
         expect(characterResponseBody.error).toBe("Character not found");
     });
-
-
 });

@@ -1,4 +1,4 @@
-import { CreateCharacterType, UpdateCharacterType } from "../types/character-types";
+import { CreateCharacterType, UpdateCharacterType, updateCharacterAbilityScores } from "../types/character-types";
 
 
 export const BARBARIAN_CHAR: CreateCharacterType = {
@@ -20,7 +20,29 @@ export const BARBARIAN_CHAR_DRAFT: CreateCharacterType = {
 };
 
 export const BARBARIAN_CHAR_UPDATE: UpdateCharacterType = {
+    name: 'Biluu The Jester - Barbarian',
     classId: 1,
     speciesId: 7,
     backgroundId: 16,
+};
+
+export const BARBARIAN_CHAR_ABILITY_SCORES: updateCharacterAbilityScores = {
+  abilityScores: {
+    base: {
+      STR: 15,
+      DEX: 13,
+      CON: 13,
+      INT: 8,
+      WIS: 12,
+      CHA: 12,
+    },
+    bonuses: {
+      STR: 1,
+      DEX: 1,
+      CON: 1,
+      INT: 0,
+      WIS: 0,
+      CHA: 0,
+    },
+  },
 };

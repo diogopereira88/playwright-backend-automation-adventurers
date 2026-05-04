@@ -23,7 +23,7 @@ test.describe.serial('Character flow validation', () => {
         });
         expect (charactersResponse.status()).toBe(200);
         const charactersResponseBody = await charactersResponse.json();
-        expect(charactersResponseBody[0].id).toBe(2313);
+        expect(charactersResponseBody[0].id).toBe(2425);
         charID = charactersResponseBody[0].id;
     });
 

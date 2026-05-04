@@ -1,5 +1,5 @@
 import { APIRequestContext } from "@playwright/test";
-import { CreateCharacterType, UpdateCharacterType } from "../types/character-types";
+import { CreateCharacterType, updateCharacterAbilityScores, UpdateCharacterType } from "../types/character-types";
 
 export async function createCharacter(
     request: APIRequestContext, 
@@ -15,7 +15,7 @@ export async function createCharacter(
     return response;
 };
 
-export async function updateCharacter(
+export async function updateCharacterByID(
     request: APIRequestContext, 
     token: string,
     data: UpdateCharacterType,
@@ -64,6 +64,21 @@ export async function deleteCharacter(
         headers: {
             Authorization: 'Bearer ' + token 
         },
+    });
+    return response;
+};
+
+export async function updateCharacterAbilityScoresByID(
+    request: APIRequestContext, 
+    token: string,
+    data: updateCharacterAbilityScores,
+    id: number
+) {
+    const response = await request.put(`/api/characters/${id}/ability-scores`, {
+        headers: {
+            Authorization: 'Bearer ' + token 
+        },
+        data,
     });
     return response;
 };
