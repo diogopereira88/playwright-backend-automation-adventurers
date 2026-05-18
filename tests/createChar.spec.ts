@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test';
-import { createAuthToken, getToken } from './client/token-client';
+import { getToken } from './client/token-client';
 import { createCharacter } from './client/character-client';
 import { BARBARIAN_CHAR } from './data/character-data';
 
@@ -9,20 +9,13 @@ let charID = 0;
 test.describe.serial('Create character using client and data', () => {
 
     test.beforeAll( async ({ request }) => {
-        // token = await getToken(request);
-        // expect(token).toBeTruthy();
-        // expect(typeof token).toBe('string');
-        // expect(token.length).toBeGreaterThan(10);
-        const response = await createAuthToken(request);
-        const responseToken = await response.json();
-
-        expect (response.status()).toBe(200);
-        expect (responseToken.token).toEqual(expect.any(String));
-
-        token = responseToken.token;
+        token = await getToken(request);
+        expect(token).toBeTruthy();
+        expect(typeof token).toBe('string');
+        expect(token.length).toBeGreaterThan(10);
     });
 
-    test('Create Barbarian Character - complete', async ({ request }) => {
+    test('Create Barbarian Character - in progress', async ({ request }) => {
         
         const characterResponse = await createCharacter(
             request, 
@@ -37,7 +30,7 @@ test.describe.serial('Create character using client and data', () => {
         expect(characterResponseBody.speciesId).toBe(BARBARIAN_CHAR.speciesId);
         expect(characterResponseBody.backgroundId).toBe(BARBARIAN_CHAR.backgroundId);
         expect(characterResponseBody.level).toBe(1);
-        expect(characterResponseBody.status).toBe("complete");
+        expect(characterResponseBody.status).toBe("in_progress");
         
         charID = characterResponseBody.id;
         console.log(charID);

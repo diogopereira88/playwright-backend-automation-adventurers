@@ -8,7 +8,7 @@ test.describe.serial('Character flow validation', () => {
         const tokenResponse = await request.post('/api/auth/token', { 
             data: { 
                 username: 'diogop', 
-                password: 'T5m@Q8v!P3k#R7xL' 
+                password: 'DiogoP2026' 
             },
         });
 

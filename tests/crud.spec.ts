@@ -30,7 +30,7 @@ test.describe.serial('CRUD Flow', () => {
         );
         const characterResponseBody = await characterResponse.json();
 
-        expect (characterResponse.status()).toBe(201);
+        expect(characterResponse.status()).toBe(201);
         expect(characterResponseBody.id).not.toBeNull();
         expect(characterResponseBody.name).toBe(BARBARIAN_CHAR_DRAFT.name);
         expect(characterResponseBody.classId).toBe(null);
@@ -80,7 +80,7 @@ test.describe.serial('CRUD Flow', () => {
         expect(characterResponseBody.speciesId).toBe(BARBARIAN_CHAR_UPDATE.speciesId);
         expect(characterResponseBody.backgroundId).toBe(BARBARIAN_CHAR_UPDATE.backgroundId);
         expect(characterResponseBody.level).toBe(1);
-        expect(characterResponseBody.status).toBe("complete");
+        expect(characterResponseBody.status).toBe("in_progress");
     });
 
 // UPDATE ABILITY SCORES //

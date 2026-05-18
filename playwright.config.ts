@@ -1,4 +1,13 @@
 import { defineConfig } from '@playwright/test';
+import dotenv from 'dotenv'
+
+dotenv.config({ quiet: true });
+
+if (!process.env.API_USERNAME || !process.env.API_PASSWORD) {
+  throw new Error(
+    'Missing API_USERNAME or API_PASSWORD. Check your .env file.'
+  );
+}
 
 export default defineConfig({
   testDir: './tests',

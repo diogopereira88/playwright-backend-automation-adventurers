@@ -8,8 +8,12 @@ export const BARBARIAN_CHAR: CreateCharacterType = {
     backgroundId: 16,
 };
 
+export const WIZARD_CHAR_DRAFT: CreateCharacterType = {
+    name: 'Biluu The Bullied - Wizard (draft)',
+};
+
 export const WIZARD_CHAR: CreateCharacterType = {
-    name: 'Biluu The Jester - Wizard',
+    name: 'Biluu The Bullied - Wizard (in progress)',
     classId: 12,
     speciesId: 1,
     backgroundId: 13,
@@ -20,7 +24,7 @@ export const BARBARIAN_CHAR_DRAFT: CreateCharacterType = {
 };
 
 export const BARBARIAN_CHAR_UPDATE: UpdateCharacterType = {
-    name: 'Biluu The Jester - Barbarian',
+    name: 'Biluu The Jester - Barbarian (in progress)',
     classId: 1,
     speciesId: 7,
     backgroundId: 16,
