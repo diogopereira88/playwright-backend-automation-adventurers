@@ -1,5 +1,5 @@
 import { APIRequestContext } from "@playwright/test";
-import { CreateCharacterType, updateCharacterAbilityScores, UpdateCharacterType } from "../types/character-types";
+import { CreateCharacterType, UpdateCharacterAbilityScores, UpdateCharacterType } from "../types/character-types";
 
 export async function createCharacter(
     request: APIRequestContext, 
@@ -71,7 +71,7 @@ export async function deleteCharacter(
 export async function updateCharacterAbilityScoresByID(
     request: APIRequestContext, 
     token: string,
-    data: updateCharacterAbilityScores,
+    data: UpdateCharacterAbilityScores,
     id: number
 ) {
     const response = await request.put(`/api/characters/${id}/ability-scores`, {

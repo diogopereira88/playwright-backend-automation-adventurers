@@ -6,6 +6,9 @@ export type CreateCharacterType = {
   classId?: number;
   speciesId?: number;
   backgroundId?: number;
+  id?: number;
+  level?: number;
+  status?: string;
 
 };
 
@@ -15,12 +18,22 @@ export type UpdateCharacterType = {
   classId: number;
   speciesId: number;
   backgroundId: number;
+  id?: number;
+  level?: number;
+  status?: string;
+
 };
 
-export type updateCharacterAbilityScores = {
+export type UpdateCharacterAbilityScores = {
   abilityScores: {
     base: Stats;
     bonuses: Stats;
+  };
+};
+
+export type UpdateCharacterAbilityScoresFinal = {
+  abilityScores: {
+    final: Stats;
   };
 };
 
@@ -34,17 +47,18 @@ export type Stats = {
 };
 
 export type CharacterResponseBody = {
+  characterId: number;
   id: number;
   name: string;
   classId: number | null;
   speciesId: number | null;
   backgroundId: number | null;
   level: number;
-  abilityScores: {
-    base: AbilitySet;
-    bonuses: AbilitySet;
-    final: AbilitySet;
-  } | null;
+  selectedAbilityScores: {
+  base: AbilitySet;
+  bonuses: AbilitySet;
+  final: AbilitySet;
+};
   currency: {
     cp?: number;
     sp?: number;

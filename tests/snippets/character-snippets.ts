@@ -1,8 +1,8 @@
 import { expect, test } from "@playwright/test";
-import { CharacterResponseBody } from "../types/character-types";
+import { UpdateCharacterType, CreateCharacterType, UpdateCharacterAbilityScores, CharacterResponseBody, UpdateCharacterAbilityScoresFinal } from "../types/character-types";
 
 export async function validateDraftChar(
-    characterResponseBody: CharacterResponseBody,
+    characterResponseBody: CreateCharacterType,
     charName: string,
 ) {
     await test.step('Validate draft char data', async () => {
@@ -14,6 +14,40 @@ export async function validateDraftChar(
         expect(characterResponseBody.backgroundId).toBe(null);
         expect(characterResponseBody.level).toBe(1);
         expect(characterResponseBody.status).toBe("draft");
-    })
+    });
     
-}
+};
+
+export async function validateUpdatedChar(
+    characterResponseBody: CharacterResponseBody,
+    charID: number,
+    data: UpdateCharacterType
+) {
+    await test.step('Validate updated char data', async () => {
+    
+        expect(characterResponseBody.id).toBe(charID);
+        expect(characterResponseBody.name).toBe(data.name);
+        expect(characterResponseBody.classId).toBe(data.classId);
+        expect(characterResponseBody.speciesId).toBe(data.speciesId);
+        expect(characterResponseBody.backgroundId).toBe(data.backgroundId);
+        expect(characterResponseBody.level).toBe(1);
+        expect(characterResponseBody.status).toBe("in_progress");
+    });
+    
+};
+
+export async function validateCharAbilityScores(
+    characterResponseBody: CharacterResponseBody,
+    charID: number,
+    data: UpdateCharacterAbilityScores,
+    final: UpdateCharacterAbilityScoresFinal
+) {
+    await test.step('Validate ability scores', async () => {
+    
+        expect(characterResponseBody.characterId).toBe(charID);
+        expect(characterResponseBody.selectedAbilityScores.base).toEqual(data.abilityScores.base);
+        expect(characterResponseBody.selectedAbilityScores.bonuses).toEqual(data.abilityScores.bonuses);
+        expect(characterResponseBody.selectedAbilityScores.final).toEqual(final.abilityScores.final); 
+    });
+    
+};
