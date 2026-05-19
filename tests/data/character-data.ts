@@ -1,25 +1,5 @@
-import { CreateCharacterType, UpdateCharacterAbilityScoresFinal, UpdateCharacterType, UpdateCharacterAbilityScores } from "../types/character-types";
+import { CreateCharacterType, UpdateCharacterAbilityScoresFinal, UpdateCharacterType, UpdateCharacterAbilityScores, DefaultEquipment, UpdateClassEquipment, ClassEquipment } from "../types/character-types";
 
-
-export const BARBARIAN_CHAR_DRAFT: CreateCharacterType = {
-    name: 'Biluu The Jester - Barbarian (draft)',
-};
-
-export const BARBARIAN_CHAR: CreateCharacterType = {
-    name: 'Biluu The Jester - Barbarian (complete)',
-    classId: 1,
-    speciesId: 7,
-    backgroundId: 16,
-};
-
-export const BARBARIAN_CHAR_UPDATE: UpdateCharacterType = {
-    name: 'Biluu The Jester - Barbarian (in progress)',
-    classId: 1,
-    speciesId: 7,
-    backgroundId: 16,
-};
-
-// ----- //
 
 export const WIZARD_CHAR_DRAFT: CreateCharacterType = {
     name: 'Biluu The Bullied - Wizard (draft)',
@@ -66,6 +46,81 @@ export const WIZARD_CHAR_UPDATE_ABILITY_SCORES_FINAL: UpdateCharacterAbilityScor
   },
 };
 
+export const CHAR_DEFAULT_EQUIPMENT = ( charID: number): DefaultEquipment => ({
+  characterId: charID,
+  equipment: [],
+});
+
+export const WIZARD_CHAR_ADD_EQUIPMENT_LABEL_A: UpdateClassEquipment = {
+
+    optionLabel: "A",
+
+};
+
+export const WIZARD_CHAR_CLASS_EQUIPMENT: ClassEquipment = {
+  addedEquipment: [
+    {
+      id: 14,
+      name: "Dagger",
+      quantity: 2,
+      isEquipped: true,
+    },
+    {
+      id: 29,
+      name: "Arcane Focus",
+      quantity: 1,
+      isEquipped: false,
+    },
+    {
+      id: 98,
+      name: "Robe",
+      quantity: 1,
+      isEquipped: false,
+    },
+    {
+      id: 78,
+      name: "Locking Spellbook",
+      quantity: 1,
+      isEquipped: false,
+    },
+    {
+      id: 101,
+      name: "Scholar's Pack",
+      quantity: 1,
+      isEquipped: false,
+    },
+  ],
+  addedCurrency: {
+    cp: 0,
+    sp: 0,
+    ep: 0,
+    gp: 5,
+    pp: 0,
+  },
+};
+
+
+
+// ----- //
+
+export const BARBARIAN_CHAR_DRAFT: CreateCharacterType = {
+    name: 'Biluu The Jester - Barbarian (draft)',
+};
+
+export const BARBARIAN_CHAR: CreateCharacterType = {
+    name: 'Biluu The Jester - Barbarian (complete)',
+    classId: 1,
+    speciesId: 7,
+    backgroundId: 16,
+};
+
+export const BARBARIAN_CHAR_UPDATE: UpdateCharacterType = {
+    name: 'Biluu The Jester - Barbarian (in progress)',
+    classId: 1,
+    speciesId: 7,
+    backgroundId: 16,
+};
+
 export const BARBARIAN_CHAR_ABILITY_SCORES: UpdateCharacterAbilityScores = {
   abilityScores: {
     base: {
@@ -99,3 +154,4 @@ export const BARBARIAN_CHAR_ABILITY_SCORES_FINAL: UpdateCharacterAbilityScoresFi
     },
   },
 };
+

@@ -1,5 +1,5 @@
 import { APIRequestContext } from "@playwright/test";
-import { CreateCharacterType, UpdateCharacterAbilityScores, UpdateCharacterType } from "../types/character-types";
+import { CreateCharacterType, UpdateCharacterAbilityScores, UpdateCharacterType, UpdateClassEquipment } from "../types/character-types";
 
 export async function createCharacter(
     request: APIRequestContext, 
@@ -19,7 +19,7 @@ export async function updateCharacterByID(
     request: APIRequestContext, 
     token: string,
     data: UpdateCharacterType,
-    id: number
+    id: number,
 ) {
     const response = await request.patch(`/api/characters/${id}`, {
         headers: {
@@ -45,7 +45,7 @@ export async function getCharacters(
 export async function getCharacterByID(
     request: APIRequestContext, 
     token: string,
-    id: number
+    id: number,
 ) {
     const response = await request.get(`/api/characters/${id}`, {
         headers: {
@@ -58,7 +58,7 @@ export async function getCharacterByID(
 export async function deleteCharacter(
     request: APIRequestContext, 
     token: string,
-    id: number
+    id: number,
 ) {
     const response = await request.delete(`/api/characters/${id}`, {
         headers: {
@@ -72,7 +72,7 @@ export async function updateCharacterAbilityScoresByID(
     request: APIRequestContext, 
     token: string,
     data: UpdateCharacterAbilityScores,
-    id: number
+    id: number,
 ) {
     const response = await request.put(`/api/characters/${id}/ability-scores`, {
         headers: {
@@ -82,3 +82,33 @@ export async function updateCharacterAbilityScoresByID(
     });
     return response;
 };
+
+export async function getCharacterEquipment(
+    request: APIRequestContext, 
+    token: string,
+    id: number,
+) {
+    const response = await request.get(`/api/characters/${id}/equipment`, {
+        headers: {
+            Authorization: 'Bearer ' + token 
+        },
+    });
+    return response;
+};
+
+export async function updateCharacterClassEquipment(
+    request: APIRequestContext, 
+    token: string,
+    id: number,
+    data: UpdateClassEquipment,
+) {
+    const response = await request.post(`/api/characters/${id}/equipment/class-choice`, {
+        headers: {
+            Authorization: 'Bearer ' + token 
+        },
+        data,
+    });
+    return response;
+};
+
+

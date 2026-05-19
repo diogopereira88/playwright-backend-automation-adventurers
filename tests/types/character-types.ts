@@ -18,9 +18,9 @@ export type UpdateCharacterType = {
   classId: number;
   speciesId: number;
   backgroundId: number;
-  id?: number;
-  level?: number;
-  status?: string;
+  // id?: number;
+  // level?: number;
+  // status?: string;
 
 };
 
@@ -45,6 +45,35 @@ export type Stats = {
   WIS: number;
   CHA: number;
 };
+
+export type DefaultEquipment = {
+  characterId: number;
+  equipment: string[];
+};
+
+export type UpdateClassEquipment = {
+
+  optionLabel: string;
+  
+};
+
+export type ClassEquipment = {
+  addedEquipment: {
+    id: number;
+    name: string;
+    quantity: number;
+    isEquipped: boolean;
+  }[];
+  addedCurrency: {
+    cp: number;
+    sp: number;
+    ep: number;
+    gp: number;
+    pp: number;
+  };
+};
+
+//-------//
 
 export type CharacterResponseBody = {
   characterId: number;

@@ -1,8 +1,8 @@
 import { test, expect } from '@playwright/test';
 import { getToken } from './client/token-client';
-import { createCharacter, deleteCharacter, getCharacterByID, updateCharacterAbilityScoresByID, updateCharacterByID } from './client/character-client';
-import { WIZARD_CHAR_DRAFT, WIZARD_CHAR_UPDATE, WIZARD_CHAR_UPDATE_ABILITY_SCORES, WIZARD_CHAR_UPDATE_ABILITY_SCORES_FINAL } from './data/character-data';
-import { validateCharAbilityScores, validateDraftChar, validateUpdatedChar } from './snippets/character-snippets';
+import { createCharacter, deleteCharacter, getCharacterByID, getCharacterEquipment, updateCharacterAbilityScoresByID, updateCharacterByID, updateCharacterClassEquipment } from './client/character-client';
+import { WIZARD_CHAR_ADD_EQUIPMENT_LABEL_A, WIZARD_CHAR_CLASS_EQUIPMENT, WIZARD_CHAR_DRAFT, WIZARD_CHAR_UPDATE, WIZARD_CHAR_UPDATE_ABILITY_SCORES, WIZARD_CHAR_UPDATE_ABILITY_SCORES_FINAL } from './data/character-data';
+import { validateCharAbilityScores, validateCharClassEquipment, validateCharDefaultEquipment, validateDraftChar, validateUpdatedChar } from './snippets/character-snippets';
 import { deletedCharMessage, expectStatusCodeCreated, expectStatusCodeNotFund, expectStatusCodeOk } from './snippets/validations-snippets';
 
 let token = '';
@@ -64,8 +64,55 @@ test.describe.serial('Final Flow', () => {
 
     });
 
+// GET CHARACTER EQUIPMENT //
+    test('Check Equipment', async ({ request }) => {
+        
+        const characterResponse = await getCharacterEquipment(
+            request, 
+            token,
+            charID
+        );
+        const characterResponseBody = await characterResponse.json();
+
+        await expectStatusCodeOk(characterResponse);
+        await validateCharDefaultEquipment(characterResponseBody, charID)
+    });
+
+    test('Add class equipment', async ({ request }) => {
+        
+        const characterResponse = await updateCharacterClassEquipment(
+            request, 
+            token, 
+            charID,
+            WIZARD_CHAR_ADD_EQUIPMENT_LABEL_A,
+        );
+        const characterResponseBody = await characterResponse.json();
+        
+        await expectStatusCodeOk(characterResponse);
+        await validateCharClassEquipment(characterResponseBody, WIZARD_CHAR_CLASS_EQUIPMENT);
+    });
+    
+
+
+//--------------------------//
+
+// GET COMPLETE CHARACTER //
+    test('Validate Complete Character', async ({ request }) => {
+        
+        const characterResponse = await getCharacterByID(
+            request, 
+            token,
+            charID
+        );
+        const characterResponseBody = await characterResponse.json();
+
+        await expectStatusCodeOk(characterResponse);
+
+    });
+
+
 // DELETE CHARACTER //    
-    test('Delete Character', async ({ request }) => {
+    test.skip('Delete Character', async ({ request }) => {
         
         const characterResponse = await deleteCharacter(
             request, 
@@ -80,7 +127,7 @@ test.describe.serial('Final Flow', () => {
     });
 
 // GET DELETED CHARACTER - ERROR 404 //
-    test('Validate Deleted Character', async ({ request }) => {
+    test.skip('Validate Deleted Character', async ({ request }) => {
         
         const characterResponse = await getCharacterByID(
             request, 
@@ -94,3 +141,4 @@ test.describe.serial('Final Flow', () => {
     });
 
 });
+

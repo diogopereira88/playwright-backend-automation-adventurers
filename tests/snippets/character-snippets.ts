@@ -1,5 +1,5 @@
 import { expect, test } from "@playwright/test";
-import { UpdateCharacterType, CreateCharacterType, UpdateCharacterAbilityScores, CharacterResponseBody, UpdateCharacterAbilityScoresFinal } from "../types/character-types";
+import { UpdateCharacterType, CreateCharacterType, UpdateCharacterAbilityScores, CharacterResponseBody, UpdateCharacterAbilityScoresFinal, DefaultEquipment, ClassEquipment } from "../types/character-types";
 
 export async function validateDraftChar(
     characterResponseBody: CreateCharacterType,
@@ -48,6 +48,30 @@ export async function validateCharAbilityScores(
         expect(characterResponseBody.selectedAbilityScores.base).toEqual(data.abilityScores.base);
         expect(characterResponseBody.selectedAbilityScores.bonuses).toEqual(data.abilityScores.bonuses);
         expect(characterResponseBody.selectedAbilityScores.final).toEqual(final.abilityScores.final); 
+    });
+    
+};
+
+export async function validateCharDefaultEquipment(
+    characterResponseBody: DefaultEquipment,
+    charID: number,
+) {
+    await test.step('Validate initial equipment ', async () => {
+    
+        expect(characterResponseBody.characterId).toBe(charID);
+        expect(characterResponseBody.equipment).toEqual([]);
+    });
+    
+};
+
+export async function validateCharClassEquipment(
+    characterResponseBody: ClassEquipment,
+    data: ClassEquipment
+) {
+    await test.step('Validate added class equipment ', async () => {
+    
+        expect(characterResponseBody.addedEquipment).toEqual(data.addedEquipment);
+        expect(characterResponseBody.addedCurrency).toEqual(data.addedCurrency);
     });
     
 };
